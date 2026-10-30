@@ -1,0 +1,12 @@
+node_modules
+.next
+data
+backups
+dev.log
+.env.local
+.env*.local
+.git
+.claude
+*.log
+# Key/wallet backups must never enter a build context, whatever they're named.
+*.backup.txt

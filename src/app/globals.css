@@ -1,0 +1,348 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────
+   TRADING ARENA — a trading terminal, not a landing page.
+   Near-black ground, amber as the one UI accent (headers, labels,
+   controls), P&L in green/red, everything else in a grey ink scale.
+   Flat surfaces, hard 1px rules, a 2px machine radius, monospace
+   headlines and data. No gradients, no glows, no glassmorphism —
+   the deliberate opposite of the generated-website look.
+   Type: Geist Mono (headlines, numerals, labels) / Geist (body prose).
+   Each bot keeps a signature identity colour (avatars, sparklines).
+   ───────────────────────────────────────────────────────────── */
+:root {
+  --page: #0a0a0b;
+  --page-deep: #060607;
+  --card: #101113;
+  --card-deep: #0c0d0e;
+  --card2: #16171a;
+  --card3: #1e2024;
+  --card4: #282a2f;
+  --ink: #eaebed;
+  --ink2: #a6a8ae;
+  --ink3: #71747b;
+  --ink4: #494b51;
+
+  --hairline: rgba(255, 255, 255, 0.1);
+  --hairline-2: rgba(255, 255, 255, 0.17);
+  --hairline-3: rgba(255, 255, 255, 0.28);
+  --grid: #1e2024;
+  --baseline: #282a2f;
+
+  /* The one UI accent: terminal amber — headers, labels, controls, links. */
+  --brand: #f5a623;
+  --brand-dim: #b97e18;
+  --brand-light: #ffc24d;
+  --brand-glow: rgba(245, 166, 35, 0.35);
+
+  /* A brighter yellow-gold for value / "the bar" (Monkey), kept distinct
+     from the amber UI accent so the benchmark row reads differently. */
+  --gold: #ffd23f;
+  --gold-light: #ffe27a;
+
+  --good: #2ee27a;
+  --good-light: #5aec99;
+  --bad: #ff5b5b;
+  --bad-light: #ff8686;
+  --warn: #ff9e2c;
+  --warn-light: #ffb85c;
+
+  /* Bot signature colours — identity only (avatars, sparklines, lines). */
+  --s1: #4d9fff;
+  --s2: #ff6b7d;
+  --s3: #35d0c4;
+  --s4: #ffc23f;
+  --s5: #b98cff;
+  --s6: #3ee08f;
+  --s7: #56b6ff;
+  --s8: #ff9d4d;
+
+  --radius: 2px;
+}
+
+@theme inline {
+  --color-page: var(--page);
+  --color-page-deep: var(--page-deep);
+  --color-card: var(--card);
+  --color-card-deep: var(--card-deep);
+  --color-card2: var(--card2);
+  --color-card3: var(--card3);
+  --color-card4: var(--card4);
+  --color-ink: var(--ink);
+  --color-ink2: var(--ink2);
+  --color-ink3: var(--ink3);
+  --color-ink4: var(--ink4);
+  --color-hairline: var(--hairline);
+  --color-hairline-2: var(--hairline-2);
+  --color-hairline-3: var(--hairline-3);
+  --color-grid: var(--grid);
+  --color-baseline: var(--baseline);
+  --color-s1: var(--s1);
+  --color-s2: var(--s2);
+  --color-s3: var(--s3);
+  --color-s4: var(--s4);
+  --color-s5: var(--s5);
+  --color-s6: var(--s6);
+  --color-s7: var(--s7);
+  --color-s8: var(--s8);
+  --color-good: var(--good);
+  --color-bad: var(--bad);
+  --color-warn: var(--warn);
+  --color-brand: var(--brand);
+  --color-brand-dim: var(--brand-dim);
+  --color-brand-light: var(--brand-light);
+  --color-gold: var(--gold);
+  --color-gold-light: var(--gold-light);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-geist-mono);
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    /* Flat near-black. No radial glow — a terminal has a background, not a mood. */
+    background: var(--page);
+    color: var(--ink);
+    font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background: rgba(245, 166, 35, 0.28);
+    color: #fff;
+  }
+
+  /* Keyboard focus — one amber outline, no glow. */
+  :focus-visible {
+    outline: 1px solid var(--brand);
+    outline-offset: 2px;
+  }
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--page-deep);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--card3);
+    border: 2px solid var(--page-deep);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--card4);
+  }
+}
+
+@layer components {
+  /* ── Typography ───────────────────────────────────────────── */
+  /* Headlines are monospace — the terminal voice. Tight, hard, no flourish. */
+  .display {
+    font-family: var(--font-geist-mono), ui-monospace, monospace;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.08;
+  }
+
+  .display-lg { font-size: 2.4rem; letter-spacing: -0.03em; }
+  .display-md { font-size: 1.7rem; letter-spacing: -0.025em; }
+  .display-sm { font-size: 1.15rem; line-height: 1.2; }
+
+  .num {
+    font-family: var(--font-geist-mono), ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+    font-feature-settings: "tnum" 1;
+  }
+
+  .th {
+    font-family: var(--font-geist-mono), monospace;
+    font-size: 0.66rem;
+    text-transform: uppercase;
+    letter-spacing: 0.11em;
+    color: var(--ink3);
+    font-weight: 500;
+  }
+
+  /* Section headers are amber — the terminal's labelled panels. */
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--font-geist-mono), monospace;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--brand);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .section-label::after {
+    content: "";
+    height: 1px;
+    flex: 1;
+    background: var(--hairline);
+  }
+
+  /* ── Surfaces ─────────────────────────────────────────────── */
+  /* Flat panels: a fill, a hard 1px border, a 2px machine radius. No
+     gradient, no shadow, no blur. */
+  .card {
+    position: relative;
+    background: var(--card);
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  /* Legacy aliases — all resolve to the same flat panel now. */
+  .card-glass {
+    background: var(--card);
+  }
+  .card-elevated {
+    border-color: var(--hairline-2);
+  }
+  .card-elevated-lg {
+    border-color: var(--hairline-2);
+  }
+
+  .interactive {
+    transition: border-color 0.12s ease, background-color 0.12s ease;
+  }
+  .interactive:hover {
+    border-color: var(--hairline-3);
+  }
+
+  /* ── Buttons ──────────────────────────────────────────────── */
+  /* Solid amber, black text, hard edge. A terminal command, not a pill. */
+  .btn-primary {
+    background: var(--brand);
+    color: #0a0a0b;
+    font-family: var(--font-geist-mono), monospace;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border: 1px solid var(--brand);
+    border-radius: var(--radius);
+    transition: background-color 0.12s ease, border-color 0.12s ease;
+  }
+  .btn-primary:hover {
+    background: var(--brand-light);
+    border-color: var(--brand-light);
+  }
+  .btn-primary:active { background: var(--brand-dim); }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--ink2);
+    border: 1px solid var(--hairline-2);
+    border-radius: var(--radius);
+    font-family: var(--font-geist-mono), monospace;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    transition: border-color 0.12s ease, color 0.12s ease;
+  }
+  .btn-secondary:hover {
+    border-color: var(--brand);
+    color: var(--brand);
+  }
+
+  /* ── Badges (hard tags) ───────────────────────────────────── */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    border: 1px solid var(--hairline-2);
+    border-radius: var(--radius);
+    padding: 1px 6px;
+    font-family: var(--font-geist-mono), monospace;
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 500;
+    color: var(--ink2);
+    white-space: nowrap;
+    background: transparent;
+  }
+  .badge-primary { border-color: rgba(245, 166, 35, 0.55); color: var(--brand); }
+  .badge-success { border-color: rgba(46, 226, 122, 0.5); color: var(--good); }
+  .badge-danger { border-color: rgba(255, 91, 91, 0.5); color: var(--bad); }
+  .badge-warning { border-color: rgba(255, 158, 44, 0.5); color: var(--warn); }
+
+  /* ── Tables ───────────────────────────────────────────────── */
+  .table-row-hover {
+    transition: background-color 0.1s ease;
+  }
+  .table-row-hover:hover {
+    background: rgba(245, 166, 35, 0.06);
+  }
+
+  .table-sticky thead th {
+    position: sticky;
+    top: 0;
+    background: var(--card2);
+    z-index: 10;
+  }
+
+  /* ── Motion (minimal) ─────────────────────────────────────── */
+  @keyframes cell-flash {
+    0% { background: rgba(245, 166, 35, 0.22); }
+    100% { background: transparent; }
+  }
+  .cell-flash { animation: cell-flash 0.5s ease-out; }
+
+  @keyframes fade-in-up {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-in { animation: fade-in-up 0.25s ease-out both; }
+
+  /* A live indicator — a small expanding ring in P&L green. */
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(46, 226, 122, 0.5); }
+    50% { box-shadow: 0 0 0 4px rgba(46, 226, 122, 0); }
+  }
+  .animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
+
+  /* Scrolling ticker — the tape crawling along the bottom rail. Pauses on
+     hover; the reduced-motion guard below freezes it to a static strip. */
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  .marquee {
+    display: inline-flex;
+    white-space: nowrap;
+    animation: marquee 45s linear infinite;
+  }
+  .marquee:hover { animation-play-state: paused; }
+
+  input[type="range"] {
+    accent-color: var(--brand);
+    height: 4px;
+    background: var(--card3);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
